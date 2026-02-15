@@ -1,0 +1,40 @@
+#abstract Classes
+from abc import ABC,abstractmethod
+
+class Animal(ABC):
+    @abstractmethod
+    def make_sound(self):
+        pass
+
+
+class Cat(Animal):
+    def make_sound(self):
+        print("Meow")
+
+
+class HimalayanCat(Cat):
+    def make_sound(self):
+        super().make_sound()
+        print("Miouw Miouw")
+
+
+class Dog(Animal):
+    def make_sound(self):
+        print("Woof woof")
+
+
+class Doberman(ABC):
+    @abstractmethod
+    def make_sound(self):
+        pass
+
+
+class KingDoberman(Doberman):
+    def make_sound(self):
+        super().make_sound()
+        print("WOOAAAAAAAFFF")
+
+Cat().make_sound()
+HimalayanCat().make_sound()
+Dog().make_sound()
+KingDoberman().make_sound()
