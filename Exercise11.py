@@ -9,11 +9,25 @@ class LinkedList:
         self.head = head
 
     def empty(self):
-         if self.head is None:
-             return True
-         else:
-             return False
+        return not isinstance(self.head, Node)
 
-    def insert_start(self,data):
-        Node_new=Node(data,self.head)
-        self.head=Node_new
+    def insert_start(self, data):
+        self.head = Node(data)
+
+    def insert_after(self, node, data):
+        flag = self.head
+        while not flag is None:
+            if flag is node:
+                temp = node
+                flag = Node(data)
+                Node.next = temp
+                break
+            else:
+                flag = flag.next
+        print("Δεν βρέθηκε το  Node ")
+
+
+list1 = LinkedList()
+list1.insert_start(10)
+list1.insert_after(10,20)
+
