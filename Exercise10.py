@@ -1,6 +1,5 @@
 from abc import ABC, abstractmethod
-
-p = 3, 14159
+from math import pi
 
 
 class GeometricaObjectInterface(ABC):
@@ -19,31 +18,31 @@ class Resizeable(ABC):
         pass
 
 
-class Circle(GeometricaObjectInterface):
+class Cycle(GeometricaObjectInterface):
     def __init__(self, radius):
         self.radius = radius
 
     def area(self):
-        return p * self.radius ** 2
+        return pi * self.radius ** 2
 
     def perimeter(self):
-        return 2 * p * self.radius
+        return 2 * pi * self.radius
 
 
-class ResizeableCircle(Circle, Resizeable):
+class ResizeableCycle(Cycle, Resizeable):
     def __init__(self, radius):
         super().__init__(radius)
 
     def area(self):
-        return p * self.radius ** 2
+        return pi * self.radius ** 2
 
     def perimeter(self):
-        return 2 * p * self.radius
+        return 2 * pi * self.radius
 
     def resize(self, new_radius):
         self.radius = new_radius
 
 
-a=ResizeableCircle(3)
+a=ResizeableCycle(3)
 
-print(type(a.area()))
+print(a.area(),a.perimeter())
