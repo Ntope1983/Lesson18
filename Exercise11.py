@@ -17,7 +17,11 @@ class LinkedList:
 
     # Insert at beginning
     def insert_start(self, data):
-        self.head = Node(data, self.head)
+        if self.head is None:
+            self.head = Node(data, self.head)
+        else:
+            new_node = Node(data, self.head)
+            self.head = new_node
 
     # Insert after a specific node (identity-based)
     def insert_after(self, node, data):
@@ -57,29 +61,89 @@ class LinkedList:
         return []
 
     def __str__(self):
+        nodes = []
         flag = self.head
-        result = ""
-        while flag is not None:
-            result += "-" + str(flag)
+        while flag:
+            nodes.append(str(flag.data))
             flag = flag.next
-        return result
+        return "-" + "-".join(nodes) if nodes else ""
 
-list1 = LinkedList()
 
-list1.insert_start(10)
-node_x = list1.head
+class OrderedList(LinkedList):
+    def __init__(self):
+        # Initialize the ordered list by calling parent constructor
+        super().__init__()
 
-list1.insert_after(node_x, 20)
-node_y = list1.head.next
+    def insert(self, data):
+        """
+        Insert a new value while maintaining ascending order.
 
-list1.insert_after(node_y, 30)
-list1.insert_after(node_x, 40)
+        Cases:
+        1. If list is empty → insert at start.
+        2. If new value is smaller than or equal to head → insert at start.
+        3. Otherwise → traverse until correct position is found,
+           then insert after the appropriate node.
+        """
 
-print(f"H λίστα πριν {list1}")
+        if self.empty():  # Case 1: empty list
+            self.insert_start(data)
 
-list_s = list1.delete_after(node_x)
+        elif self.head.data >= data:  # Case 2: insert before head
+            self.insert_start(data)
 
-print(f"H λίστα μετά {list1}")
-print("Τα nodes που αφαιρέθηκαν:")
-for nod in list_s:
-    print(str(nod))
+        else:
+            # Case 3: find correct insertion position
+            current = self.head
+
+            # Move forward while next node exists
+            # and next node's value is still smaller than data
+            while current.next is not None and current.next.data < data:
+                current = current.next
+
+            # Insert after the last smaller element
+            self.insert_after(current, data)
+
+    def delete(self, data):
+        """
+        Delete the first occurrence of 'data'.
+
+        Returns:
+        - True if deletion was successful
+        - False if data was not found or list is empty
+        """
+
+        # Case 1: empty list
+        if self.head is None:
+            return False
+
+        current = self.head
+
+        # Case 2: value is at head
+        if current.data == data:
+            self.head = current.next
+            return True
+
+        # Case 3: search for value in the rest of the list
+        while current.next is not None:
+
+            # If next node contains the target value,
+            # bypass it (remove it from list)
+            if current.next.data == data:
+                current.next = current.next.next
+                return True
+
+            current = current.next
+
+        # Value not found
+        return False
+
+
+
+x = OrderedList()
+x.insert(5)
+x.insert(4)
+x.insert(4)
+x.insert(150)
+x.insert(1)
+x.delete(150)
+print(x)
